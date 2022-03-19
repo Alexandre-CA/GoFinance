@@ -1,20 +1,40 @@
+import React from 'react'
+import { ThemeProvider } from 'styled-components/native';
+import { SafeAreaView } from 'react-native';
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import AppLoading from 'expo-app-loading';
+
+
+import theme from './src/Global/theme';
+import { Dashboard } from './src/containers/Dashboard'
+import { Register } from './src/containers/Register';
+import { SingIn } from './src/containers/SingIn';
+import { AppRouting } from './src/containers/AppRouting';
+import {AuthProvider} from './src/Context'
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_700Bold
+  })
+  if (!fontsLoaded) {
+    return (
+      <AppLoading />
+    )
+  }else{
+    return (
+      <ThemeProvider theme={theme}>
+        <StatusBar style='light'/>
+          <AuthProvider>
+            <SingIn />
+          </AuthProvider>
+      </ThemeProvider>
+    );  
+  }
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
